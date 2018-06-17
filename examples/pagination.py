@@ -33,14 +33,15 @@ if __name__ == '__main__':
     api = Client(args.username, args.password)
 
     # ---------- Pagination with max_id ----------
+    rank_token = Client.generate_uuid()
     user_id = '2958144170'
     followers = []
-    results = api.user_followers(user_id)
+    results = api.user_followers(user_id, rank_token)
     followers.extend(results.get('users', []))
 
     next_max_id = results.get('next_max_id')
     while next_max_id:
-        results = api.user_followers(user_id, max_id=next_max_id)
+        results = api.user_followers(user_id, rank_token, max_id=next_max_id)
         followers.extend(results.get('users', []))
         if len(followers) >= 600:       # get only first 600 or so
             break
